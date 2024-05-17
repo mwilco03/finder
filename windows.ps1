@@ -13,8 +13,8 @@ function Find-Thing {
 
     # Download BusyBox
     try {
-        Invoke-RestMethod -Uri $url -OutFile $busyBoxPath
-        Write-Output "BusyBox downloaded successfully."
+       curl.exe -s $url -o $busyBoxPath
+       Write-Output "BusyBox downloaded successfully."
     } catch {
         Write-Output "Error downloading BusyBox: $_"
         exit
