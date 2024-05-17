@@ -20,11 +20,10 @@ $directories = @("$HOME\Documents", "$HOME\Downloads", "$HOME\Desktop")
 
 # Search for the keywords using BusyBox grep
 try {
-    $keywords = "$kw1|$kw2"
     foreach ($dir in $directories) {
         if (Test-Path $dir) {
             Write-Output "Searching in $dir"
-            & $busyBoxPath grep -Ern $keywords $dir
+            & $busyBoxPath grep -rin $keyword $dir
         } else {
             Write-Output "Directory not found: $dir"
         }
