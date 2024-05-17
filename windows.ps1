@@ -1,3 +1,4 @@
+function Find-Thing{
 param(
     [string]$url = "http://frippery.org/files/busybox/busybox.exe",
     [string]$keywords
@@ -34,4 +35,5 @@ try {
 } finally {
     Remove-Item -Path $busyBoxPath -Force
     Write-Output "Cleanup completed, BusyBox deleted."
+}
 }
