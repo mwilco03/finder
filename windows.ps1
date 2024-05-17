@@ -1,14 +1,15 @@
-# Set error preference
-$ErrorActionPreference = "Stop"
+param(
+    [string]$url = "http://frippery.org/files/busybox/busybox.exe",
+    [string]$keywords
+)
 
-# Define the URL and local paths
-$url = "http://frippery.org/files/busybox/busybox.exe"
+$ErrorActionPreference = "Stop"
 $tempPath = [System.IO.Path]::GetTempPath()
 $busyBoxPath = Join-Path -Path $tempPath -ChildPath "busybox.exe"
 
 # Download BusyBox
 try {
-    Invoke-WebRequest -Uri $url -OutFile $busyBoxPath
+    Invoke-RestMethod -Uri $url -OutFile $busyBoxPath
     Write-Output "BusyBox downloaded successfully."
 } catch {
     Write-Output "Error downloading BusyBox: $_"
@@ -18,12 +19,12 @@ try {
 # Define directories to search
 $directories = @("$HOME\Documents", "$HOME\Downloads", "$HOME\Desktop")
 
-# Search for the keywords using BusyBox grep
+# Search using BusyBox grep
 try {
     foreach ($dir in $directories) {
         if (Test-Path $dir) {
             Write-Output "Searching in $dir"
-            & $busyBoxPath grep -rin $keyword $dir
+            & $busyBoxPath grep -Erin $keywords $dir
         } else {
             Write-Output "Directory not found: $dir"
         }
@@ -31,7 +32,6 @@ try {
 } catch {
     Write-Output "Error during search: $_"
 } finally {
-    # Clean up
     Remove-Item -Path $busyBoxPath -Force
     Write-Output "Cleanup completed, BusyBox deleted."
 }
